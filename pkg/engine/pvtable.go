@@ -1,9 +1,5 @@
 package engine
 
-import (
-	"unsafe"
-)
-
 const (
 	HFNONE = iota
 	HFALPHA
@@ -36,16 +32,26 @@ type HashTable struct {
 // because when we store something into it, we use the zobrist key (uint64) % number of elements - the result of this operation is always
 // a number between 0 and b.HashTable.NumEntries.
 func InitHashTable(b *Board, MB int) {
-	entrySize := unsafe.Sizeof(HashEntry{}) // 40 bytes
-
+	// using unsafe.Sizeof(HashEntry{}) results in too much memory being allocated
+	// by the go runtime. If we choose 160 MB, pprof reports memory usage to 160 MB
+	// but external monitoring tools shows 2-3 times more memory being allocated
+	// For now use 100 bytes for the entrySize - this seems to prevent go from allocating too much memory
+	entrySize := 100
 	HashSize := 1024 * 1024 * MB
-	b.HashTable.NumEntries = HashSize / int(entrySize)
 
+	b.HashTable.NumEntries = HashSize / entrySize
 	b.HashTable.Table = make([]HashEntry, b.HashTable.NumEntries)
+	b.HashTable.NewWrite = 0
 }
 
 func ClearHashTable(b *Board) {
-	b.HashTable.Table = make([]HashEntry, b.HashTable.NumEntries)
+	for i := range b.HashTable.Table {
+		b.HashTable.Table[i].PosKey = 0
+		b.HashTable.Table[i].Move = NOMOVE
+		b.HashTable.Table[i].Depth = 0
+		b.HashTable.Table[i].Score = 0
+		b.HashTable.Table[i].Flags = 0
+	}
 	b.HashTable.NewWrite = 0
 }
 

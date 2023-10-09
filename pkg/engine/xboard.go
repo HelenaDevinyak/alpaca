@@ -13,6 +13,7 @@ func XBoardLoop(b *Board, s *SearchInfo) error {
 
 	s.GameMode = XBOARDMODE
 	s.PostThinking = TRUE
+	PrintOptions()
 	depth := -1
 	movestogo := [2]int{30, 30}
 	movetime := -1
@@ -24,6 +25,11 @@ func XBoardLoop(b *Board, s *SearchInfo) error {
 	command := ""
 	MB := 64
 	timeLeft := 0
+
+	engineSide = BLACK
+	b.ParseFen(START_FEN)
+	depth = 1
+	t = -1
 
 	for {
 		if b.Side == engineSide && CheckResult(b) == FALSE {
