@@ -39,7 +39,18 @@ func XBoardLoop(b *Board, s *SearchInfo) error {
 			if t != -1 {
 				s.Timeset = TRUE
 				t /= movestogo[b.Side]
-				t -= 50
+
+				if t > 1500 {
+					t -= 50
+				}
+				if t < 0 {
+					t = 0
+					inc -= 50
+					if inc < 0 {
+						inc = 1
+					}
+				}
+
 				durationOffset := time.Duration(t+inc) * time.Millisecond
 				s.StopTime = s.StartTime.Add(durationOffset)
 			}

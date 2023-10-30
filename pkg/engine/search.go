@@ -217,7 +217,7 @@ func AlphaBeta(alpha, beta, depth, doNull int, b *Board, s *SearchInfo) int {
 		return score
 	}
 
-	if doNull == 1 && inCheck == 0 && b.Ply > 0 && b.BigPCE[b.Side] > 0 && depth >= 4 {
+	if doNull == 1 && inCheck == 0 && b.Ply > 0 && b.BigPCE[b.Side] > 1 && depth >= 4 {
 		b.MakeNullMove()
 		score = -AlphaBeta(-beta, -beta+1, depth-4, FALSE, b, s)
 		b.TakeNullMove()
