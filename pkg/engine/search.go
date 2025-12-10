@@ -233,6 +233,25 @@ func AlphaBeta(alpha, beta, depth, doNull int, b *Board, s *SearchInfo) int {
 	var ml MoveList
 	GenerateAllMoves(b, &ml)
 
+	hasCapture := false
+	for ii := 0; ii < ml.Count; ii++ {
+		if ml.Moves[ii].Move&MoveFlagCapture != 0 {
+			hasCapture = true
+			break
+		}
+	}
+
+	if hasCapture {
+		newCount := 0
+		for ii := 0; ii < ml.Count; ii++ {
+			if ml.Moves[ii].Move&MoveFlagCapture != 0 {
+				ml.Moves[newCount] = ml.Moves[ii]
+				newCount++
+			}
+		}
+		ml.Count = newCount
+	}
+
 	legal := 0
 	oldAlpha := alpha
 	bestMove := NOMOVE
