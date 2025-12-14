@@ -9,7 +9,7 @@ go build cmd/alpaca/main.go
 ```
 
 ## Changes:
-Modified search.go to restrict moves to captures if there is one available.
+Modified search.go and main.go to restrict moves to captures if there is one available.
 
 ## License/Credits:
 This project is based on the open-source chess engine Alpaca (https://github.com/bbogdan95/alpaca.git), which is licensed under MIT. More is in the LICENSE file.

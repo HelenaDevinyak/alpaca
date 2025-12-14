@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"runtime"
 	"strconv"
 	"strings"
 
@@ -12,6 +13,8 @@ import (
 )
 
 func main() {
+	runtime.GOMAXPROCS(1)
+
 	engine.InitAll()
 
 	PerftTestSuite("./perftsuite.epd")
