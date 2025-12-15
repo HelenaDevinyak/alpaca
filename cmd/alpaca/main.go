@@ -4,12 +4,15 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"runtime"
 	"strings"
 
 	"github.com/bbogdan95/alpaca/pkg/engine"
 )
 
 func main() {
+	runtime.GOMAXPROCS(1)
+
 	engine.InitAll()
 
 	board := &engine.Board{}
