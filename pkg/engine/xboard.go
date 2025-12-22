@@ -59,7 +59,7 @@ func XBoardLoop(b *Board, s *SearchInfo) error {
 				s.Depth = MAXDEPTH
 			}
 
-			fmt.Printf("time:%d start:%s stop:%s depth:%d timeset:%d movestgoto:%d mps:%d\n", t, s.StartTime, s.StopTime, s.Depth, s.Timeset, movestogo[b.Side], mps)
+			// fmt.Printf("time:%d start:%s stop:%s depth:%d timeset:%d movestgoto:%d mps:%d\n", t, s.StartTime, s.StopTime, s.Depth, s.Timeset, movestogo[b.Side], mps)
 			SearchPosition(b, s)
 
 			if mps != 0 {
@@ -79,7 +79,7 @@ func XBoardLoop(b *Board, s *SearchInfo) error {
 
 		command = strings.Fields(inBuf)[0]
 
-		fmt.Printf("command seen:%s\n", inBuf)
+		// fmt.Printf("command seen:%s\n", inBuf)
 
 		switch command {
 		case "quit":
@@ -91,16 +91,16 @@ func XBoardLoop(b *Board, s *SearchInfo) error {
 			PrintOptions()
 		case "sd":
 			if n, err := fmt.Sscanf(inBuf, "sd %d", &depth); err == nil && n == 1 {
-				fmt.Printf("DEBUG depth:%d\n", depth)
+				// fmt.Printf("DEBUG depth:%d\n", depth)
 			}
 		case "st":
 			if n, err := fmt.Sscanf(inBuf, "st %d", &movetime); err == nil && n == 1 {
-				fmt.Printf("DEBUG movetime:%d\n", movetime)
+				// fmt.Printf("DEBUG movetime:%d\n", movetime)
 			}
 		case "time":
 			if n, err := fmt.Sscanf(inBuf, "time %d", &t); err == nil && n == 1 {
 				t *= 10
-				fmt.Printf("DEBUG time:%d\n", t)
+				// fmt.Printf("DEBUG time:%d\n", t)
 			}
 		case "memory":
 			n, err := fmt.Sscanf(inBuf, "memory %d", &MB)
@@ -117,16 +117,16 @@ func XBoardLoop(b *Board, s *SearchInfo) error {
 				MB = 2048
 			}
 
-			fmt.Printf("Set Hash to %d MB\n", MB)
+			// fmt.Printf("Set Hash to %d MB\n", MB)
 			InitHashTable(b, MB)
 		case "level":
 			movetime = -1
 			sec := 0
 			if n, _ := fmt.Sscanf(inBuf, "level %d %d %d", &mps, &timeLeft, &inc); n != 3 {
 				fmt.Sscanf(inBuf, "level %d %d:%d %d", &mps, &timeLeft, &sec, &inc)
-				fmt.Printf("DEBUG level with :\n")
+				// fmt.Printf("DEBUG level with :\n")
 			} else {
-				fmt.Printf("DEBUG level without :\n")
+				// fmt.Printf("DEBUG level without :\n")
 			}
 
 			timeLeft *= 60000
@@ -140,7 +140,7 @@ func XBoardLoop(b *Board, s *SearchInfo) error {
 			}
 
 			t = -1
-			fmt.Printf("DEBUG level timeLeft:%d movesToGo:%d inc:%d mps:%d\n", timeLeft, movestogo[0], inc, mps)
+			// fmt.Printf("DEBUG level timeLeft:%d movesToGo:%d inc:%d mps:%d\n", timeLeft, movestogo[0], inc, mps)
 		case "ping":
 			fmt.Printf("pong%s\n", inBuf[4:])
 		case "new":
@@ -285,7 +285,7 @@ func ConsoleLoop(b *Board, s *SearchInfo) error {
 		default:
 			move, err := ParseMove(inBuf, b)
 			if err != nil || move == NOMOVE {
-				fmt.Printf("Command unknown: %s\n", inBuf)
+				// fmt.Printf("Command unknown: %s\n", inBuf)
 			} else {
 				b.MakeMove(move)
 				b.Ply = 0

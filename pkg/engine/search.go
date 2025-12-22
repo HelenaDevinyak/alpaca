@@ -52,7 +52,7 @@ func SearchPosition(b *Board, s *SearchInfo) {
 		} else if s.GameMode == XBOARDMODE && s.PostThinking == TRUE {
 			fmt.Printf("%d %d %d %1d ", currentDepth, bestScore, elapsed, s.Nodes)
 		} else if s.PostThinking == TRUE {
-			fmt.Printf("score:%d depth:%d nodes:%1d time:%d(ms) ", bestScore, currentDepth, s.Nodes, elapsed)
+			// fmt.Printf("score:%d depth:%d nodes:%1d time:%d(ms) ", bestScore, currentDepth, s.Nodes, elapsed)
 		}
 
 		if s.GameMode == UCIMODE || s.PostThinking == TRUE {
@@ -235,7 +235,18 @@ func AlphaBeta(alpha, beta, depth, doNull int, b *Board, s *SearchInfo) int {
 
 	hasCapture := false
 	for ii := 0; ii < ml.Count; ii++ {
-		if ml.Moves[ii].Move&MoveFlagCapture != 0 {
+		m := ml.Moves[ii].Move
+		if m&MoveFlagCapture == 0 {
+			continue
+		}
+
+		res, err := b.MakeMove(m)
+		if err != nil {
+			continue
+		}
+
+		if res == TRUE {
+			b.TakeMove()
 			hasCapture = true
 			break
 		}
